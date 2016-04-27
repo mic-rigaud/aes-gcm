@@ -70,6 +70,7 @@
 \newcommand{\ie}{\latinloc{i.e.}}
 \newcommand{\cad}{c'est-à-dire }
 \newcommand{\st}{\ensuremath{\text{\xspace s.t.\xspace}}}
+\newcommand{\aes}{AES-GCM }
 
 %%%% Definition des couleur %%%%
 
@@ -126,9 +127,11 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
-Halala... AES...
+GCM ou Galois Counter Mode est un mode d'opération de chiffrement par bloc en cryptographie symétrique. C'est un algorithme de chiffrement authentifié qui garanti l'intégrité et l'authenticité des données. Lors des opérations que nous verrons plus loin, cet algorithme demande de chiffrer avec un autre algorithme de chiffrement. D'après la norme IEEE 802.1AE, on utilise l'algorithme AES (Advanced Encryption Standard). On appelle donc cet algorithme \aes.
 
-Galois - Counter Mode
+Dans ce rapport, nous expliquerons dans un premier temps le fonctionnement de \aes ainsi que de ses autres modes. Puis nous le comparerons à d'autres algorithmes semblable en termes de complexité. Enfin nous essayerons de voir quels sont les principaux vecteur d'attaques de cet algorithme dans les applications usuelles.
+
+
 \newpage	  
 %%%%%%%%%%%%%%%%%%%%%%%%
 
