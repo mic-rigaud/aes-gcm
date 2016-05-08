@@ -1,9 +1,9 @@
-\chapter{Les différents modes}
+\chapter{Les différents modes de fonctionnement de l'AES}
 \label{chap:différents modes}
 
-Il existe plusieurs modes de fonctionnenement de l'AES, comme l'\aes.
+Il existe plusieurs modes de fonctionnenement de l'AES, comme l'\aes. Nous présenterons ici les plus utilisés.
 
-\section{ECB - Electronic codebook}
+\section{ECB}
 
 Le mode ECB (Electronic codebook ou dictionnaire de code) est le plus simple. Il consiste à diviser le message à chiffrer en blocs qui vont être chiffrés indépendament les uns des autres. Pour le déchiffrement on procédera de la même manière en découpant le texte chiffré en blocs et en décryptant les blocs indépendament les uns des autres.
 
@@ -14,7 +14,7 @@ Le mode ECB (Electronic codebook ou dictionnaire de code) est le plus simple. Il
   \label{schema ECB}
 \end{figure}
 
-Ce mode présente possède les avantages du chiffrement par flots, est pré-calculable et est parallélisable. Il offre la possibilité de déchiffrer une zone quelconque du texte chiffré et ainsi de déchiffrer une partie seulement des données.
+Ce mode présente les avantages du chiffrement par flots, est pré-calculable et est parallélisable. Il offre la possibilité de déchiffrer une zone quelconque du texte chiffré et ainsi de déchiffrer une partie seulement des données.
 
 Cependant ce mode possède un défaut considérable: deux blocs de texte clair seront chiffrés de la même manière, car il n'y a pas de randomisation. Ce défaut rend le mode ECB vulnérable aux attaques par dictionnaire et à l'analyse fréquentielle. En effet pour une clef donnée, on pourra générer un dictionnaire avec les correspondances entre les clairs et le chiffrés, permettant ainsi de retrouver le texte clair. Pour ces raisons l'utilisation de ce mode est fortement déconseillé.
 

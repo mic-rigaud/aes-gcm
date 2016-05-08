@@ -127,15 +127,30 @@ Le fonctionnement global de \aes est résumé sur l'image \ref{Fonctionnement de
   \label{Fonctionnement de GCM}
 \end{figure}
 
-
+\newpage
 \subsection{Déchiffrement}
 
-A COMPLETER
+Pour le déchiffrement on utilise exactement le bloc de chiffrement pour obtenir le texte clair et on utilise le chiffré pour obtenir le tag d'authentification. Si on obtient le même tag que celui qui été envoyé alors on est sur d'avoir un message authentifié et identifié.
 
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{fonctionnement_dechiff}
+  \caption{Fonctionnement du déchiffrement}
+  \label{Fonctionnement du dechiff}
+\end{figure}
+
+
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{fonctionnement_auth}
+  \caption{Fonctionnement de la vérification d'authenticité}
+  \label{Fonctionnement auth}
+\end{figure}
 
 \section{GMAC}
 
-GMAC est un cas particulier de GCM où aucun texte brut n'est présenté.
+GMAC est un cas particulier de GCM où aucun texte brut n'est présenté. C'est donc une variante de GCM qui ne réalise que l'authentification.
 
 
 

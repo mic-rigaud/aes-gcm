@@ -137,12 +137,20 @@ Dans ce rapport, nous expliquerons dans un premier temps le fonctionnement de \a
 
 \input{Partie1}
 \input{Partie2}
-\input{Partie3}
-
+%\input{Partie3}
+\input{Partie4}
 %%%% CONCLUSION %%%%%%%%%
 
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
+
+Face à cette étude nous pouvons conclure que \aes est un algorithme très puissant et rapide qui permet d'assurer la confidentialité, l'intégrité et l'authenticité des données.
+
+Il est évidemment a recommander par rapport au autres mode d'AES qui n'assure pas l'authenticité. Mais nous avons également vu qu'il fallait privilégier dans l'algorithme GCM l'utilisation de AES par rapport à Treefish ou Salsa20 qui sont bien moins utilisé.
+
+Enfin nous avons constaté que l'utilisation de GCM est bien plus performante que d'autre algorithme comme OCB ou CCM pour réalisé l'authenticité et l'intégrité.
+
+
 \newpage
 
 %%%% ANNEXE %%%%%%%%%%%%
