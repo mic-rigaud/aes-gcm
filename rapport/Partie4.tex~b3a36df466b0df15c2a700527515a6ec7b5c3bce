@@ -1,0 +1,30 @@
+
+\chapter{Les alternatives à AES}
+
+Nous discuterons dans ce chapitre des alternatives existantes à l'AES.
+
+\section{Rijndael - Twofish - Serpent}
+Rijndael est l'algorithe qui remporta en octobre 2000 le concours AES lancé en 1997 par NIST et devient le nouveau standard de chiffrement. (Advanced Encryption Standard)
+
+Parmis les finalistes, autre que Rijndael, se trouvaient les algorithmes Serpent et Twofish. Ces deux algorithmes sont des algorithmes de chiffrement par bloc qui ont subi de nombreuses analyses cryptographiques. Cependant aucun de ces deux algorithmes n'a reçu beaucoup d'attention depuis l'adoption de Rijndael comme nouveau standard. Les derniers résultats les plus significatifs datent ainsi de 2000. Rijndael s'est imposé comme nouveau standard et est massivement utilisé.
+
+\section{Salsa20}
+Salsa20 est un algorithme de chiffrement par flots, contrairement à AES qui est un algorithme de chiffrement par blocs. Cette distinction est importante car un algorithme de chiffrement par flots permet de produire une chaine pseudo-aléatoire de bits auxquels sont appliqués un XOR avec le message à encrypter. Les algorithmes de chiffrement par bloc peuvent être configurés en chiffrement par flots (mode CTR ou OFB).
+
+Comme nous l'avons vu précédement, les algorithmes de chiffrement par blocs peuvent être configurés pour à la fois assurer l'encryption mais également l'authentification. De plus dans la plupart des modes de fonctionnement des algorithmes par blocs on peut accèder à des parties spécifiques du texte crypté.
+Salsa20 permet un accès à une partie spécifique de la sortie encryptée. En effet l'algorithme salsa20 a besoin d'une clef, d'un vecteur d'initialisation et d'un numéro de bloc, ce qui lui permet de décrypter n'importe quel bloc.
+
+Il est également possible d'utiliser Salsa20 en mode authentifié, pour cela il faut coupler l'algorithme Salsa20 avec un algorithme d'authentification de messages comme le Poly1305 créé par Daniel J. Bernstein. Le problème est que cet usage n'est pas standardisé.
+
+Un des arguments positifs de Salsa20 est qu'il est rapide en logiciel. L'initialisation et le paramètrage de la clef est négligeable, et il possède un faible nombre de cycles par byte par rapport aux autres algorithmes. En effet Salsa20 peut être 2 à 3 fois plus rapide que AES en mode CTR.
+
+Les principales limitations d'un algorithme comme Salsa20 sont les mêmes que pour tous les algorithmes de chiffrement non-standard: ils sont alternatifs et n'ont ainsi pas la même attention et ne sont donc pas standardisés par des organismes comme NIST. Bien que Salsa20 ait subit un nombre décent d'analyses crypatanalogiques, la plus part positives, ce n'est rien comparé à AES.
+
+
+\section{Threefish}
+Threefish est une contribution récente aux algorithmes alternatifs à AES. Threefish fait partie des algorithmes de chiffrement à avoir réussi la plupart des compétitions organisées par NIST. Threefish est un algorithme de chiffrement par blocs qui peut être configuré pour fonctionner sur des blocs de taille 256, 512 ou 1024 bits. Alors que Threefish a subit quelques cryptanalyses, cela reste encore relativement limité. Aucun de ces travaux n'ont montré de résultats probants quant à une éventuelle faille de sécurité, ce qui inspire plutôt confiance. Encore une fois, les études menées n'ont rien de comparable avec celle faites sur AES, et ainsi il est difficle de dire où se situe Threefish par rapport à AES en matière de sécurité.
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "rapport_de_base"
+%%% End: 
