@@ -1,21 +1,17 @@
 \chapter{Comparaison GCM - CCM - OCB}
 
+Lors de nos recherches nous avons constaté que les algorithmes fournissant à la foi la confidentialité, l'authenticité et l'intégrité sont: GCM, CCM, OCB, CWC, EAX et APM.
+
+Mais paris eux seulement trois sortent du lot GCM, OCB et CCM. C'est pourquoi nous avons décidé d'écarter les autres algorithmes et de seulement comparer ces trois.
+
 \section{CCM}
 
-<<<<<<< HEAD:rapport/Partie4.tex
-Nous avons constater que \aes s'appuie sur AES comme méthode de chiffrement. Mais cet algorithme pourrait s'appuyer sur un autre algorithme de chiffrement. C'est pourquoi, nous discuterons dans ce chapitre des alternatives existantes à l'AES.
-
-\section{Rijndael - Twofish - Serpent}
-Rijndael est l'algorithe qui remporta en octobre 2000 le concours AES lancé en 1997 par NIST\footnote{National Institute of Standards and Technology} et devient le nouveau standard de chiffrement. (Advanced Encryption Standard)
-=======
-Le mode CCM est un mode de fonctionnement qui permet à la fois l'authentification et la confidentialité. Le mode CCM est définit que pour les algorithme de chiffrement par bloc dont la taille des bloc est de 128 bits.
-
->>>>>>> b3a36df466b0df15c2a700527515a6ec7b5c3bce:rapport/Partie3.tex
-
-Le vecteur d'initialisation (IV) doit est être choisi avec précaution car il ne doit jamais être utilisé plus d'un fois par clef. En effet le mode CCM est un dérivé du mode CTR.
+Comme son nom le suggère le mode CCM combine le mode CTR et le mode CBC-MAC. C'est deux modes "primitfs" sont combinés pour authentifier les données puis les encrypter. CBC-MAC permet dans un premier temps d'obtenir un tag d'authentification du message clair. Puis le message et le tag sont chiffrés en utilisant le mode CTR.
 
 
-Comme son nom le suggère le mode CCM combine le mode CBC-MAC et le mode CTR. C'est deux mode "primitfs" sont combiné pour authentifier les données puis les encrypter. CBC-MAC permet dans un premier temps d'obtenir un tag d'authentification du message clair. Puis le message et le tag sont encryptés en utilisant le mode CTR.
+
+L'une vecteur d'initialisation (IV) doit est être choisi avec précaution car il ne doit jamais être utilisé plus d'un fois par clef. En effet le mode CCM est un dérivé du mode CTR.
+
 
 
 Une idée essentielle est que la même clé de cryptage peut être utilisé à la fois pour l'authentification et l'encryptage, à condition que les valeurs de comptage utilisées dans le cryptage ne rentrent pas en collision avec le vecteur d'initialisation (VI) utilisé pour l'authentification.
@@ -35,7 +31,7 @@ Une idée essentielle est que la même clé de cryptage peut être utilisé à l
   \label{Chiffrement du tag et du message avec CTR}
 \end{figure}
 
-
+\newpage
 
 
 \section{OCB}
@@ -47,3 +43,10 @@ Le mode OCB est lui aussi conçu pour fournir à la fois l'authentification et l
   \caption{Fonctionnement du mode OCB}
   \label{Fonctionnement du mode OCB}
 \end{figure}
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "rapport_de_base"
+%%% End: 
