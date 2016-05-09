@@ -10,7 +10,7 @@ Comme son nom le suggère le mode CCM combine le mode CTR et le mode CBC-MAC. C'
 
 
 
-L'une vecteur d'initialisation (IV) doit est être choisi avec précaution car il ne doit jamais être utilisé plus d'un fois par clef. En effet le mode CCM est un dérivé du mode CTR.
+Le vecteur d'initialisation (IV) doit est être choisi avec précaution car il ne doit jamais être utilisé plus d'un fois par clef. En effet le mode CCM est un dérivé du mode CTR.
 
 
 
@@ -31,6 +31,10 @@ Une idée essentielle est que la même clé de cryptage peut être utilisé à l
   \label{Chiffrement du tag et du message avec CTR}
 \end{figure}
 
+
+Contrairement à \aes, la génération du tag d'authentification (via CBC-MAC) est faîte a partir du message en clair et non pas le message encrypté. Au niveau performances, AES-CCM va être de manière général utilisé plus de calcul que \aes. En effet dans \aes l'authentification et l'encryption ne font appel qu'a une seule fois au chiffrement AES par bloc tandis que pour AES-CCM va utiliser une première fois le chiffrement AES pour l'encryption puis une seconde fois pour générer le tag d'authentification. De plus le mode CCM ne peut pas être parallélisé.
+
+
 \newpage
 
 
@@ -44,6 +48,8 @@ Le mode OCB est lui aussi conçu pour fournir à la fois l'authentification et l
   \label{Fonctionnement du mode OCB}
 \end{figure}
 
+AES-OCB est un mode de fonctionnement qui est soumis à deux brevet au Etat-Unis qui empêchent son utilisation dans toute application commerciale ou gouvernementale au Etat-Unis. 
+De plus Niels Ferguson a montrer l'existance d'attaque sur le mode OCB qui limite l'envoie de données à 64GB par clef. D'un point de vue performance, le mode OCB est légerement plus rapide que \aes car il ne nécéssite pas l'implementation des multiplications dans l'espace de Galois.
 
 
 %%% Local Variables: 
