@@ -1,92 +1,158 @@
-\chapter{Les différents modes de fonctionnement de l'AES}
-\label{chap:différents modes}
+\chapter{Fonctionnement}
+\label{chap:fonctionnement}
 
-Il existe plusieurs modes de fonctionnenement de l'AES, comme l'\aes. Nous présenterons ici les plus utilisés.
+L'algorithme \aes possède deux modes, le premier est le mode courant GCM et le second est le GMAC.
 
-\section{ECB}
+\section{GCM}
 
-Le mode ECB (Electronic codebook ou dictionnaire de code) est le plus simple. Il consiste à diviser le message à chiffrer en blocs qui vont être chiffrés indépendament les uns des autres. Pour le déchiffrement on procédera de la même manière en découpant le texte chiffré en blocs et en décryptant les blocs indépendament les uns des autres.
+\subsection{Avantanges de GCM}
 
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=\textwidth]{fonctionnement-ECB}
-  \caption{schéma ECB \cite{wiki}}
-  \label{schema ECB}
-\end{figure}
-
-Ce mode présente les avantages du chiffrement par flots, est pré-calculable et est parallélisable. Il offre la possibilité de déchiffrer une zone quelconque du texte chiffré et ainsi de déchiffrer une partie seulement des données.
-
-Cependant ce mode possède un défaut considérable: deux blocs de texte clair seront chiffrés de la même manière, car il n'y a pas de randomisation. Ce défaut rend le mode ECB vulnérable aux attaques par dictionnaire et à l'analyse fréquentielle. En effet pour une clef donnée, on pourra générer un dictionnaire avec les correspondances entre les clairs et le chiffrés, permettant ainsi de retrouver le texte clair. Pour ces raisons l'utilisation de ce mode est fortement déconseillé.
-
-\section{CBC}
-
-Avec le mode CBC (Cipher Block Chainning ou Enchaînement des blocs), on applique à chaque bloc de texte clair un "XOR" (ou exclusif) avec le bloc chiffré précedent. Ainsi chaque bloc chiffré dépend des blocs traités auparavavant. Pour le premier bloc il faut fournir un vecteur d'initialisation.
+\aes est un algorithme qui assure un haut niveau de sécurité grâce à AES, mais surtout il assure l'authenticité et l'intégrité des données. C'est à dire que si Alice essaye de communiquer avec Bob, elle est assurée que Charlie ne pourra pas lire ses données mais également qu'il ne pourra pas les modifier sans que Bob s'en aperçoive. 
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=\textwidth]{fonctionnement-CBC}
-  \caption{schema CBC - Chiffrement \cite{wiki}}
-  \label{schema CBC - Chiffrement}
+  \includegraphics[width=0.5\textwidth]{alice_bob}
+  \caption{Bob et Alice}
+  \label{Bob et Alice}
 \end{figure}
 
-Ce mode présente possède les avantages du chiffrement par flots, et il offre également la possibilité de déchiffrer une zone quelconque du texte chiffré. Cependant un des inconvénients est que le chiffrement est séquentiel ( \cad il ne peut pas être parallélisé).
+%GCM assure un haut niveau de protection des données. En effet, GCM peut détecter à la fois les modifications de code accidentelles et les modifications non autorisées intentionnelles.
 
-Pour le déchiffrement, on passe le premier bloc crypté dans le déchiffrement de bloc et on effectue un "XOR" avec le vecteur d'initialisation IV. Dans le cas où le vecteur d'initialisation est incorrect seul le premier bloc crypté sera impossible à décrypter. En effet à chaque bloc on applique un "XOR" avec le chiffré du bloc précédent, et pas le texte clair. Ainsi on peut retrouver un bloc de texte clair uniquement à partir du bloc crypté précédent, ce qui permet ainsi la parallélisation de la décryption. 
+De plus, GCM est un algorithme parallélisable qui assure une implémentation à haut débit à la fois matériel et logiciel.
+~\\
+
+Néanmoins, \aes suppose que Alice et Bob se soient au préalable échangés une clef secrète.
+
+\subsection{Acronymes}
+
+
+Tout d'abord, pour bien expliquer le fonctionnement de \aes, il nous faut définir certains acronymes.
+
+\begin{center}
+  \begin{tabular}[h]{|l|l|}
+    \hline
+    Plaintext&le texte à chiffrer\\
+    Ciphertext&le texte chiffré\\
+    auth Data&des données supplémentaires à authentifier\\
+%    Counter&un élément supposé aléatoire\\
+    K&la clé de chiffrement (secret)\\
+    H&Sous clé de hachage (secret)\\
+    IV& Vecteur d'initialisation supposé aléaoire\\
+    Mult&une multiplication dans l'espace de Galois\\
+    \hline
+  \end{tabular}
+\end{center}
+
+
+\subsection{Chiffrement}
+
+\aes est composé de deux blocs distincts, le bloc de chiffrement et le bloc d'authentification\footnote{On parlera ici d'authenticité lorsque l'on veut s'assurer que le message vient de la bonne personne}-intégrité\footnote{On parlera d'intégrité lorsque l'on veut s'assurer que les données n'ont pas été modifiées}.
+
+Dans un premier temps on va parler du bloc de chiffrement. Dans GCM il y C pour \og counter\fg{}, \cad que \aes s'appuie sur un mode qu'on nomme CTR \footnote{CounTeR}.
+
+Comme on peut le voir sur la figure \ref{schema CTR}, ce mode chiffre un compteur avec une clef (K) à travers un algorithme. Ensuite il réalise une opération de type XOR (ou exclusif) sur le texte clair avec la sortie de l'algorithme pour obtenir le texte chiffré.
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=\textwidth]{fonctionnement-CBC_de}
-  \caption{schema CBC - Déchiffrement}
-  \label{schema CBC - Déchiffrement}
+  \includegraphics[width=\textwidth]{ctr}
+  \caption{schéma CTR \cite{wiki}}
+  \label{schema CTR}
 \end{figure}
 
+ Ce mode combine les avantages du chiffrement par flots, est pré-calculable et est parallélisable. En effet il est possible de calculer à l'avance en parallèle tous les chiffrés des compteurs. Il ne restera plus qu'à les passer dans la fonction XOR avec le clair pour obtenir le chiffré.
+ ~\\
+
+ Dans le cas de \aes le bloc de chiffrement est l'algorithme AES, et le compteur est le vecteur d'initialisation pseudo aléatoire IV qu'on incrémente.
 
 
+\subsection{Authentification-Intégrité}
 
-\section{CFB}
-Le mode CFB (Cipher FeedBack ou Chiffrement à rétroaction) est similaire au mode CBC. Tout comme le CBC, ce mode permet de déchiffrer n'importe quelle zone du chiffré. Cependant, comme le CBC, le chiffrement est séquentiel, il ne peut donc pas être parallèlisé. Le déchiffrement est similaire au CBC et peut, quant à lui, être parallélisé. 
+L'algorithme GCM permet de créer un Tag qui valide l'authenticité et l'intégrité des données. Pour mieux comprendre nous avons découpé cette opération pour voir tous les éléments qui interviennent dans ce processus.
+
+Tout d'abord, la première chose dont on cherche à s'assurer est l'intégrité des données chiffrées que nous envoyons. En effet, nous avons chiffré notre texte mais rien ne nous protège contre une modification intentionnelle ou accidentelle du message envoyé. Ainsi, si Charlie cherche à gêner la communication de Bob et Alice et qu'il change certains bits on voudrait s'en rendre compte. On pourrait réaliser un hash de notre message avec des fonctions comme sha ou md5, mais si on fait cela on ne pourra pas être protégé contre les modifications intentionnelles. Charlie n'aurait qu'à remplacer le hash par le hash du message contenant sa modification. La solution retenue dans GCM est d'utiliser des multiplications dans l'espace de Galois avec une autre clef nommée H secrète. On fait donc passer le premier bloc de chiffrés dans un bloc de multiplication avec H. Puis on réalise un XOR du résultat avec le bloc de chiffré suivant. Enfin on refait la multiplication comme on peut le voir sur l'image \ref{auth1}.
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=\textwidth]{fonctionnement-CFB}
-  \caption{schema CFB - Chiffrement}
-  \label{schema CFB - Chiffrement}
+  \includegraphics[width=0.4\textwidth]{auth1}
+  \caption{authentification du message chiffré}
+  \label{auth1}
 \end{figure}
+
+%~\\
+
+Mais on ne veut pas seulement vérifier l'intégrité du message mais également du vecteur d'initialisation IV. Pour cela on réalise un \og et\fg{} logique entre la longueur de message et la longueur de l'IV
+puis un XOR avec le tag précédent. Enfin, on effectue un bloc de Multiplication dans l'espace de Galois toujours avec la clef H comme on peut le voir sur l'image \ref{auth2}.
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=\textwidth]{fonctionnement-CFB_de}
-  \caption{schema CFB - Déchiffrement}
-  \label{schema CFB - Déchiffrement}
+  \includegraphics[width=0.4\textwidth]{auth2}
+  \caption{authentification de la longueur du message et de IV}
+  \label{auth2}
 \end{figure}
 
-\section{OFB}
-Le mode OFB (Output FeedBack) est une variante du mode CFB. En effet, au lieu d'utiliser un bloc chiffré pour chiffrer le suivant, le mode OFB va utiliser le chiffré du vecteur d'initialisation. S'il s'agit du bloc N, alors celui-ci sera chiffré avec le vecteur d'initialisation chiffré N fois. Le décryptage est très proche du CFB, il faut juste prendre le déchiffré du vecteur d'initialisation.
+%~\\
+
+Ensuite, lors d'une communication entre Alice et Bob il y a des protocoles qui sont utilisés pour communiquer comme TCP/IP. Il y a donc des données qui vont entourer le message comme l'adresse IP qui permettent d'authentifier l'émetteur. Pour être certain que le message n'a pas été intercepté, on va intégrer ces données à notre tag d'intégrité et ainsi assurer l'authenticité du message. 
+Au début de l'algorithme, on fait passer ces données dans un bloc de multiplication puis on réalise un XOR avec le premier bloc chiffré comme on peut le voir sur l'image \ref{auth3}.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.5\textwidth]{auth3}
+  \caption{authentification de data supplémentaire}
+  \label{auth3}
+\end{figure}
+
+
+
+Nous avons donc l'intégrité et l'authenticité du message, de la longueur de IV, de la longueur du message, et des données périphériques au message, mais pour terminer l'intégrité des données on va ajouter à ceci l'IV et la clef K. %pour être certain que personne n'a touché a notre vecteur d'initialisation ainsi que
+Pour cela nous chiffrons l'IV avec un compteur à 0 avec la clef K à travers l'algorithme AES. Puis nous réalisons un XOR avec le tag précédent comme on peut le voir sur l'image \ref{auth4}.
+
+On obtient donc un tag qui permet de vérifier l'intégrité de tous les paramètres du message et l'authenticité de l'émetteur.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.5\textwidth]{auth4}
+  \caption{authentification de la clef K}
+  \label{auth4}
+\end{figure}
+
+
+Le fonctionnement global de \aes est résumé sur l'image \ref{Fonctionnement de GCM}.
 
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=\textwidth]{fonctionnement-OFB}
-  \caption{schema OFB - Chiffrement}
-  \label{schema OFB - Chiffrement}
+  \includegraphics[width=0.8\textwidth]{fonctionnement3}
+  \caption{Fonctionnement de GCM}
+  \label{Fonctionnement de GCM}
 \end{figure}
+
+\newpage
+\subsection{Déchiffrement}
+
+Pour le déchiffrement on utilise exactement le bloc de chiffrement pour obtenir le texte clair et on utilise le chiffré pour obtenir le tag d'authentification. Si on obtient le même tag que celui qui été envoyé alors on est sur d'avoir un message authentifié et identifié.
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=\textwidth]{fonctionnement-OFB_de}
-  \caption{schema OFB - Déhiffrement}
-  \label{schema OFB - Déchiffrement}
+  \includegraphics[width=0.8\textwidth]{fonctionnement_dechiff}
+  \caption{Fonctionnement du déchiffrement}
+  \label{Fonctionnement du dechiff}
 \end{figure}
 
-\section{CTR}
-Comme le mode OFB, le mode CTR permet le chiffrement par flot et est pré-calculable. De plus il offre un accès aléatoire aux données, est parallélisable et n'utilise que la fonction de chiffrement. 
+
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=\textwidth]{fonctionnement-CTR}
-  \caption{schema CTR - Chiffrement}
-  \label{schema CTR - Chiffrement}
+  \includegraphics[width=0.8\textwidth]{fonctionnement_auth}
+  \caption{Fonctionnement de la vérification d'authenticité}
+  \label{Fonctionnement auth}
 \end{figure}
+
+\section{GMAC}
+
+GMAC est un cas particulier de GCM où aucun texte brut n'est présenté. C'est donc une variante de GCM qui ne réalise que l'authentification.
+
+
 
 
 %%% Local Variables: 
