@@ -48,18 +48,20 @@ Tout d'abord, pour bien expliquer le fonctionnement de \aes, il nous faut défin
 
 \aes est composé de deux blocs distincts, le bloc de chiffrement et le bloc d'authentification\footnote{On parlera ici d'authenticité lorsque l'on veut s'assurer que le message vient de la bonne personne}-intégrité\footnote{On parlera d'intégrité lorsque l'on veut s'assurer que les données n'ont pas été modifiées}.
 
-Dans un premier temps on va parler du bloc de chiffrement. Dans GCM il y C pour \og counter\fg{}, \cad que \aes s'appuie sur un mode qu'on nomme CTR \footnote{CounTeR}.
+Dans un premier temps on va parler du bloc de chiffrement. Dans GCM il y C pour \og counter\fg{}, \cad que \aes s'appuie sur un mode qu'on nomme CTR \footnote{Le mode CTR a été décrit à la page \pageref{ctr}, nous rappelons ici que le schéma de fonctionnement.} qu'on peut voir à la figure \ref{schema CTR}.
 
-Comme on peut le voir sur la figure \ref{schema CTR}, ce mode chiffre un compteur avec une clef (K) à travers un algorithme. Ensuite il réalise une opération de type XOR (ou exclusif) sur le texte clair avec la sortie de l'algorithme pour obtenir le texte chiffré.
+
+
+%Comme on peut le voir sur la figure \ref{schema CTR}, ce mode chiffre un compteur avec une clef (K) à travers un algorithme. Ensuite il réalise une opération de type XOR (ou exclusif) sur le texte clair avec la sortie de l'algorithme pour obtenir le texte chiffré.
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{ctr}
-  \caption{schéma CTR \cite{wiki}}
+  \caption{schéma CTR - Chiffrement \cite{wiki}}
   \label{schema CTR}
 \end{figure}
 
- Ce mode combine les avantages du chiffrement par flots, est pré-calculable et est parallélisable. En effet il est possible de calculer à l'avance en parallèle tous les chiffrés des compteurs. Il ne restera plus qu'à les passer dans la fonction XOR avec le clair pour obtenir le chiffré.
+ %Ce mode combine les avantages du chiffrement par flots, est pré-calculable et est parallélisable. En effet il est possible de calculer à l'avance en parallèle tous les chiffrés des compteurs. Il ne restera plus qu'à les passer dans la fonction XOR avec le clair pour obtenir le chiffré.
  ~\\
 
  Dans le cas de \aes le bloc de chiffrement est l'algorithme AES, et le compteur est le vecteur d'initialisation pseudo aléatoire IV qu'on incrémente.

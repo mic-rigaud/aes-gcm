@@ -3,9 +3,11 @@
 
 Il existe plusieurs modes de fonctionnement cryptographiques qui peuvent être mis en oeuvre avec l'algorithme de chiffrement AES. Nous verrons dans un premier temps les principaux modes de fonctionnement.
 
+Nous nous appuierons tout au long de ce rapport sur ces différents modes.
+
 \section{ECB}
 
-Le mode ECB (Electronic codebook ou dictionnaire de code) est le plus simple. Il consiste à diviser le message à chiffrer en blocs qui vont être chiffrés indépendament les uns des autres. Pour le déchiffrement on procédera de la même manière en découpant le texte chiffré en blocs et en décryptant les blocs indépendament les uns des autres.
+Le mode ECB (Electronic codebook ou dictionnaire de code) est le plus simple. Il consiste à diviser le message à chiffrer en blocs qui vont être chiffrés indépendamment les uns des autres. Pour le déchiffrement on procédera de la même manière en découpant le texte chiffré en blocs et en décryptant les blocs indépendamment les uns des autres.
 
 \begin{figure}[!h]
   \centering
@@ -16,11 +18,11 @@ Le mode ECB (Electronic codebook ou dictionnaire de code) est le plus simple. Il
 
 Ce mode présente les avantages du chiffrement par flots, est pré-calculable et est parallélisable. Il offre la possibilité de déchiffrer une zone quelconque du texte chiffré et ainsi de déchiffrer une partie seulement des données.
 
-Cependant ce mode possède un défaut considérable: deux blocs de texte clair seront chiffrés de la même manière, car il n'y a pas de randomisation. Ce défaut rend le mode ECB vulnérable aux attaques par dictionnaire et à l'analyse fréquentielle. En effet pour une clef donnée, on pourra générer un dictionnaire avec les correspondances entre les clairs et le chiffrés, permettant ainsi de retrouver le texte clair. Pour ces raisons l'utilisation de ce mode est fortement déconseillé.
+Cependant ce mode possède un défaut considérable: deux blocs de texte clair seront chiffrés de la même manière, car il n'y a pas de randomisation. Ce défaut rend le mode ECB vulnérable aux attaques par dictionnaire et à l'analyse fréquentielle. En effet pour une clef donnée, on pourra générer un dictionnaire avec les correspondances entre les clairs et le chiffré, permettant ainsi de retrouver le texte clair. Pour ces raisons l'utilisation de ce mode est fortement déconseillé bien qu'il soit défini par défaut dans de nombreuses applications comme MySQL.
 
 \section{CBC}
-
-Avec le mode CBC (Cipher Block Chainning ou Enchaînement des blocs), on applique à chaque bloc de texte clair un "XOR" (ou exclusif) avec le bloc chiffré précedent. Ainsi chaque bloc chiffré dépend des blocs traités auparavavant. Pour le premier bloc il faut fournir un vecteur d'initialisation.
+\label{cbc}
+Avec le mode CBC (Cipher Block Chainning ou Enchaînement des blocs), on applique à chaque bloc de texte clair un "XOR" (ou exclusif) avec le bloc chiffré précédent. Ainsi chaque bloc chiffré dépend des blocs traités auparavant. Pour le premier bloc il faut fournir un vecteur d'initialisation.
 
 \begin{figure}[!h]
   \centering
@@ -29,7 +31,7 @@ Avec le mode CBC (Cipher Block Chainning ou Enchaînement des blocs), on appliqu
   \label{schema CBC - Chiffrement}
 \end{figure}
 
-Ce mode présente possède les avantages du chiffrement par flots, et il offre également la possibilité de déchiffrer une zone quelconque du texte chiffré. Cependant un des inconvénients est que le chiffrement est séquentiel ( \cad il ne peut pas être parallélisé).
+Ce mode possède les avantages du chiffrement par flots, et il offre également la possibilité de déchiffrer une zone quelconque du texte chiffré. Cependant un des inconvénients est que le chiffrement est séquentiel ( \cad il ne peut pas être parallélisé).
 
 Pour le déchiffrement, on passe le premier bloc crypté dans le déchiffrement de bloc et on effectue un "XOR" avec le vecteur d'initialisation IV. Dans le cas où le vecteur d'initialisation est incorrect seul le premier bloc crypté sera impossible à décrypter. En effet à chaque bloc on applique un "XOR" avec le chiffré du bloc précédent, et pas le texte clair. Ainsi on peut retrouver un bloc de texte clair uniquement à partir du bloc crypté précédent, ce qui permet ainsi la parallélisation de la décryption. 
 
@@ -44,7 +46,7 @@ Pour le déchiffrement, on passe le premier bloc crypté dans le déchiffrement 
 
 
 \section{CFB}
-Le mode CFB (Cipher FeedBack ou Chiffrement à rétroaction) est similaire au mode CBC. Tout comme le CBC, ce mode permet de déchiffrer n'importe quelle zone du chiffré. Cependant, comme le CBC, le chiffrement est séquentiel, il ne peut donc pas être parallèlisé. Le déchiffrement est similaire au CBC et peut, quant à lui, être parallélisé. 
+Le mode CFB (Cipher FeedBack ou Chiffrement à rétroaction) est similaire au mode CBC. Tout comme le CBC, ce mode permet de déchiffrer n'importe quelle zone du chiffré. Cependant, comme le CBC, le chiffrement est séquentiel, il ne peut donc pas être parallélise. Le déchiffrement est similaire au CBC et peut, quant à lui, être parallélisé. 
 
 \begin{figure}[!h]
   \centering
@@ -79,12 +81,20 @@ Le mode OFB (Output FeedBack) est une variante du mode CFB. En effet, au lieu d'
 \end{figure}
 
 \section{CTR}
-Comme le mode OFB, le mode CTR permet le chiffrement par flot et est pré-calculable. De plus il offre un accès aléatoire aux données, est parallélisable et n'utilise que la fonction de chiffrement. 
+\label{ctr}
+%Comme le mode OFB, le mode CTR permet le chiffrement par flot et est pré-calculable. De plus il offre un accès aléatoire aux données, est parallélisable et n'utilise que la fonction de chiffrement. 
+
+Comme on peut le voir sur la figure \ref{schema CTR - Chiffrement}, le mode CTR chiffre un compteur avec une clef (K) à travers un algorithme. Ensuite il réalise une opération de type \og XOR\fg{} (ou exclusif) sur le texte clair avec la sortie de l'algorithme pour obtenir le texte chiffré. 
+
+Comme le mode OFB, le mode CTR combine les avantages du chiffrement par flots, est pré-calculable et est parallélisable. En effet il est possible de calculer à l'avance en parallèle tous les chiffrés des compteurs. Il ne restera plus qu'à les passer dans la fonction XOR avec le clair pour obtenir le chiffré.
+
+
+
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=\textwidth]{fonctionnement-CTR}
-  \caption{schema CTR - Chiffrement}
+  \includegraphics[width=\textwidth]{ctr}
+  \caption{schema CTR - Chiffrement \cite{wiki}}
   \label{schema CTR - Chiffrement}
 \end{figure}
 
