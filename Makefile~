@@ -1,5 +1,5 @@
 CC=git
-LDFLAG=https://github.com/magichal/VMinC.git
+LDFLAG=https://github.com/magichal/aes-gcm.git
 LPFLAG=-a
 
 

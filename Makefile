@@ -11,7 +11,7 @@ commit:
 	@echo "operation terminee. Il faut maintenant push"
 
 push:
-	@$(CC) push $(LDFLAG)
+	@$(CC) push
 
 
 pull:
