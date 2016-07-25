@@ -1,0 +1,16 @@
+* AES-GCM
+
+** Description du contenu
+
+Ce répertoire contient un [[https://github.com/mic-rigaud/aes-gcm/blob/master/rapport/rapport_de_base.pdf][rapport]] concernant l'algorithme AES-GCM.
+
+Ce rapport réponds au sujet suivant:
+
+"=Etude de l'algorithme AES-GCM=. L'objectif de ce projet est d'expliquer le fonctionnement de l'algorithme AES-GCM et ses différents modes de fonctionnement et de comparer sa complexité avec d'autres algorithmes offrant les mêmes propriétés (confidentialité, intégrité et authentification). Il est également demandé de donner des valeurs de performance aussi bien pour des solutions académiques, qu'industrielles."
+
+
+** Auteurs
+
+Ce rapport à été rédigé par:
+- [[https://github.com/rebelattack][rebelattack]]
+- [[https://github.com/mic-rigaud][mic-rigaud]]
